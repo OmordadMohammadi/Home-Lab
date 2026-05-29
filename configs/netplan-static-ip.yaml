@@ -1,1 +1,24 @@
+# Netplan Static IP Configuration
+# Location on server: /etc/netplan/00-installer-config.yaml
+# Applied with: sudo netplan apply
+#
+# Purpose: Assigns a permanent static IP address to the server
+# so it is always reachable at the same address on the local network.
+#
+# After editing this file, permissions must be set correctly:
+# sudo chmod 600 /etc/netplan/00-installer-config.yaml
 
+network:
+  version: 2
+  ethernets:
+    enp3s0:                        # Network interface name — verify yours with: ip a
+      dhcp4: no                    # Disable automatic IP assignment
+      addresses:
+        - 192.168.x.xx/24          # Server's static IP — replace x.xx with your actual address
+      routes:
+        - to: default
+          via: 192.168.x.x         # Your router/gateway IP — replace x.x with your actual gateway
+      nameservers:
+        addresses:
+          - 8.8.8.8                # Google DNS
+          - 1.1.1.1                # Cloudflare DNS
